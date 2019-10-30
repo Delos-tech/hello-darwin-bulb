@@ -1,0 +1,7 @@
+{
+    "username": "proxy_user", 
+    "password": "19ddc1fd0854", 
+    "database": "facebook_proxy",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+}
