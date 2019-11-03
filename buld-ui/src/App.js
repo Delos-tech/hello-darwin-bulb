@@ -11,11 +11,11 @@ class App extends Component {
       on: false,
       lights: {
         light1: {
-          color: "#0000ff",
+          color: "#DDDDDD",
           on: false
         },
         light2: {
-          color: "#0000ff",
+          color: "#DDDDDD",
           on: false
         }
       }
@@ -39,6 +39,17 @@ class App extends Component {
         lights: lights
       });
     });
+    this.notifyListeners();
+  }
+
+  notifyListeners() {
+    for (const lightId of Object.keys(this.state.lights)) {
+      sendAction({
+        id: lightId,
+        color: this.state.lights[lightId].color,
+        on: this.state.lights[lightId].on
+      });
+    }
   }
 
   render() {
@@ -83,24 +94,31 @@ class LightBulb extends Component {
   }
 
   setOff = () => {
-    // this.setState({
-    //   on: false
-    // });
+    this.setState( {
+      on: false
+    });
     sendAction({ id: this.props.id, on: false });
   };
 
   setOn = () => {
-    // this.setState({
-    //   on: true
-    // });
+    this.setState( {
+      on: true
+    });
     sendAction({ id: this.props.id, on: true });
   };
 
   setYellow = () => {
-    // this.setState({
-    //   color: "#ffbb73"
-    // });
+    this.setState( {
+      color: "#ffbb73"
+    });
     sendAction({ id: this.props.id, color: "#ffbb73" });
+  };
+
+  setGreen = () => {
+    this.setState( {
+      color: "#44ff00"
+    });
+    sendAction({ id: this.props.id, color: "#44ff00" });
   };
 
   render() {
@@ -115,13 +133,14 @@ class LightBulb extends Component {
         <button onClick={this.setOff}>Off</button>
         <button onClick={this.setOn}>On</button>
         <button onClick={this.setYellow}>Yellow</button>
+        <button onClick={this.setGreen}>Green</button>
       </div>
     );
   }
 }
 
-function sendAction(action) {
-  var xhr = new XMLHttpRequest();
+function sendAction(data) {
+  let xhr = new XMLHttpRequest();
 
   xhr.addEventListener("load", () => {
     console.log(xhr.responseText);
@@ -130,22 +149,16 @@ function sendAction(action) {
   xhr.open("POST", "https://handlers.dwn-iot.com/hello");
   xhr.setRequestHeader("Content-Type", "application/json");
 
-  xhr.send(
-    JSON.stringify({
-      sender_id: "123",
-      action
-    })
-  );
+  let d = {
+    sender_id: "123",
+    data
+  };
+
+  xhr.send(JSON.stringify(d));
 }
 
 function LightbulbSvg(props) {
   return (
-    /*
-                                      Below is the markup for an SVG that is the shape
-                                      of a lightbulb.
-                                      The important part is the `fill`, where we set the
-                                      color dynamically based on props
-                                    */
     <svg width="56px" height="90px" viewBox="0 0 56 90">
       <defs />
       <g

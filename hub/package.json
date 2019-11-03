@@ -2,12 +2,12 @@
   "name": "internet-handler-hellodarwin",
   "version": "0.0.0",
   "private": true,
-  "main": "server.js",
+  "main": "",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "lint": "eslint server.js bin lib etc migrations seeders --ext js",
+    "lint": "eslint  bin lib etc migrations seeders --ext js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "nodemon": "nodemon server.js"
   },
