@@ -5,7 +5,6 @@ class App extends Component {
     super();
     this.state = {
       response: false,
-      endpoint: "http://127.0.0.1:9091",
       color: "#0000ff",
       on: false,
       lights: {
@@ -22,7 +21,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
     this.notifyListeners();
   }
 
