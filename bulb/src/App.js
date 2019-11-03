@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
 
 class App extends Component {
   constructor() {
@@ -24,21 +23,6 @@ class App extends Component {
 
   componentDidMount() {
     const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
-
-    socket.on("API", data => {
-      let lights = this.state.lights;
-      lights[data.id] = {
-        color:
-          data.color !== undefined
-            ? data.color
-            : this.state.lights[data.id].color,
-        on: data.on !== undefined ? data.on : this.state.lights[data.id].on
-      };
-      this.setState({
-        lights: lights
-      });
-    });
     this.notifyListeners();
   }
 
