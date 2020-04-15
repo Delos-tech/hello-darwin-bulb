@@ -16,7 +16,7 @@ if(process.env.NODE_ENV !== 'production') {
 const colors = {
     yellow: "#ffff00",
     green: "#44ff00",
-    white: "#dddddd",
+    white: "#ffffff",
     black: "#0000ff",
     grey: "#777777"
 }
@@ -129,18 +129,23 @@ class LightBulb extends Component {
         sendAction({id: this.props.id, on: true});
     };
 
-    setYellow = () => {
+    setColor = (color) => {
         this.setState({
-            color: colors.yellow
+            color: color
         });
-        sendAction({id: this.props.id, color: colors.yellow});
+        sendAction({id: this.props.id, color: color});
     };
 
+    setYellow = () => {
+        this.setColor(colors.yellow);
+    }
+
+    setWhite = () => {
+        this.setColor(colors.white);
+    }
+
     setGreen = () => {
-        this.setState({
-            color: colors.green
-        });
-        sendAction({id: this.props.id, color: colors.green});
+        this.setColor(colors.green);
     };
 
     render() {
@@ -154,6 +159,7 @@ class LightBulb extends Component {
 
                 <button onClick={this.setOff}>Off</button>
                 <button onClick={this.setOn}>On</button>
+                <button onClick={this.setWhite}>White</button>
                 <button onClick={this.setYellow}>Yellow</button>
                 <button onClick={this.setGreen}>Green</button>
             </div>
