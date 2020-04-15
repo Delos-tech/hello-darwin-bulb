@@ -1,5 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.idea/
+*.iml
+*~
+
+
 # dependencies
 /node_modules
 **/node_modules
@@ -23,3 +28,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+bulb-ui/src/etc/config.js

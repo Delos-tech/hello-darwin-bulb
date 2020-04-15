@@ -1,0 +1,3 @@
+module.exports = {
+    senderId: "TODO CHANGEME TO SOMETHING LOCALLY RELEVANT"
+};
