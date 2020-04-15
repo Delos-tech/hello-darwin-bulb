@@ -12,6 +12,7 @@ if(process.env.NODE_ENV !== 'production') {
         format: winston.format.simple()
     }))
 }
+const endpoint = "http://localhost:9091";
 
 const colors = {
     yellow: "#ffff00",
@@ -28,7 +29,7 @@ class App extends Component {
         super();
         this.state = {
             response: false,
-            endpoint: "http://127.0.0.1:9091",
+            endpoint: endpoint,
             color: colors.black,
             on: false,
             lights: {
@@ -174,8 +175,7 @@ function sendAction(data) {
         logger.error(xhr.responseText);
     });
 
-    // TODO route this through the hub
-    xhr.open("POST", "http://localhost:9091/hello");
+    xhr.open("POST", endpoint+"/hello");
     xhr.setRequestHeader("Content-Type", "application/json");
 
     let d = {
