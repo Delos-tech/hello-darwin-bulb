@@ -111,9 +111,9 @@ class LightBulb extends Component {
 
   setYellow = () => {
     this.setState( {
-      color: "#ffbb73"
+      color: "#ffff00"
     });
-    sendAction({ id: this.props.id, color: "#ffbb73" });
+    sendAction({ id: this.props.id, color: "#ffff00" });
   };
 
   setGreen = () => {
