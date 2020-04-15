@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 
-const senderId = require('../etc/config');
+const senderId = require('./etc/config');
 
 class App extends Component {
   constructor() {
