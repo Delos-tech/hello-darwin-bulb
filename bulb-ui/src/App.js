@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 
+const senderId = require('../etc/config');
+
 class App extends Component {
   constructor() {
     super();
@@ -150,7 +152,7 @@ function sendAction(data) {
   xhr.setRequestHeader("Content-Type", "application/json");
 
   let d = {
-    sender_id: "123",
+    sender_id: senderId,
     data
   };
 
