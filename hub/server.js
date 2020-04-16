@@ -6,22 +6,29 @@ const {
 const http = require("http");
 const socketIo = require("socket.io");
 const axios = require("axios");
-
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const app = express();
 const winston = require('winston');
+const expressWinston = require('express-winston');
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json()
 });
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({
         format: winston.format.simple()
     }))
 }
 
-const {createProxyMiddleware} = require('http-proxy-middleware');
-
-//app.use(logger);
+app.use(expressWinston.logger({
+    transports: [
+        new winston.transports.Console()
+    ],
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json()
+    )
+}));
 app.use(express.json());
 
 let iosock;
@@ -34,8 +41,9 @@ app.post("/api", (req, res) => {
     res.json("sent");
 });
 
-app.post("/hello", createProxyMiddleware({target: endPoint, changeOrigin: true, logLevel: "debug"}));
-
+/*
+app.get("/hello", createProxyMiddleware({target: endPoint, changeOrigin: true, logLevel: "debug"}));
+*/
 const server = app.listen(port, host, () => {
     logger.info(`Running Hello Darwin Device API on port ${port}`);
 });
@@ -51,6 +59,13 @@ io.on("connection", socket => {
     iosock = socket;
     // setInterval(() => getApiAndEmit(socket), 10000);
     socket.on("disconnect", () => logger.info("Client disconnected"));
+    socket.on("darwin_light", (data) => {
+        logger.info("Got DARWIN_LIGHT event: " + JSON.stringify(data));
+        logger.info("posting to " + endPoint + ": " + JSON.stringify(data));
+        axios.post(endPoint, data)
+            .catch((error) => logger.error(error))
+            .then(() => logger.info("Success"));
+    });
 });
 
 server.listen(port, () => logger.info(`Listening on port ${port}`));

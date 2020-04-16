@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import socketIOClient from "socket.io-client";
 
-const senderId = require('./etc/config');
+const senderId = require('./etc/config').senderId;
 const winston = require('winston');
+
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json()
 });
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({
         format: winston.format.simple()
     }))
@@ -22,7 +23,16 @@ const colors = {
     grey: "#777777"
 }
 
-
+const socket = socketIOClient(endpoint);
+socket.on('connect', () => {
+    logger.info("connected");
+});
+socket.on('event', (data) => {
+    logger.info("received " + data);
+});
+socket.on('disconnect', () => {
+    logger.info("disconnected");
+});
 
 class App extends Component {
     constructor() {
@@ -46,9 +56,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const {endpoint} = this.state;
-        const socket = socketIOClient(endpoint);
-
         socket.on("API", data => {
             let lights = this.state.lights;
             lights[data.id] = {
@@ -107,6 +114,7 @@ class LightBulb extends Component {
             color: props.color,
             offColor: colors.grey
         };
+
     }
 
     componentWillReceiveProps(props) {
@@ -169,21 +177,10 @@ class LightBulb extends Component {
 }
 
 function sendAction(data) {
-    let xhr = new XMLHttpRequest();
+    const emitData={sender_id: senderId, data};
+    logger.info("sending darwin_light: "+JSON.stringify(emitData));
 
-    xhr.addEventListener("load", () => {
-        logger.error(xhr.responseText);
-    });
-
-    xhr.open("POST", endpoint+"/hello");
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    let d = {
-        sender_id: senderId,
-        data
-    };
-
-    xhr.send(JSON.stringify(d));
+    socket.emit("darwin_light", emitData);
 }
 
 function LightbulbSvg(props) {
