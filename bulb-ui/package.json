@@ -1,15 +1,19 @@
 {
   "name": "hello-darwin-device",
   "version": "0.1.0",
+  "engines": {
+    "node": ">10.0.0 <13.0.0"
+  },
   "private": true,
   "dependencies": {
     "express": "~4.16.1",
     "morgan": "~1.9.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.4.1",
     "request": "^2.88.0",
     "socket.io-client": "^2.3.0",
+    "typescript": "^3.9.6",
     "winston": "^3.2.1"
   },
   "devDependencies": {

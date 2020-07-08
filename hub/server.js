@@ -41,14 +41,10 @@ app.post("/api", (req, res) => {
     res.json("sent");
 });
 
-/*
-app.get("/hello", createProxyMiddleware({target: endPoint, changeOrigin: true, logLevel: "debug"}));
-*/
 const server = app.listen(port, host, () => {
     logger.info(`Running Hello Darwin Device API on port ${port}`);
 });
 
-// const server = http.createServer(app);
 const io = socketIo(server);
 
 // this is bad for production code because it creates a new interval
@@ -64,7 +60,7 @@ io.on("connection", socket => {
         logger.info("posting to " + endPoint + ": " + JSON.stringify(data));
         axios.post(endPoint, data)
             .catch((error) => logger.error(error))
-            .then(() => logger.info("Success"));
+            .then(() => logger.silly("Success"));
     });
 });
 
